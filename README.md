@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+使用用本地浏览器，参考人类递归式搜索的本地搜索mcp服务 Using a local browser, refer to human recursive search for local search MCP services
 =======
 # CogniFusion
 用本地浏览器，参考人类递归式搜索的本地搜索mcp服务
