@@ -1,9 +1,5 @@
 使用用本地浏览器，参考人类递归式搜索的本地搜索mcp服务 Using a local browser, refer to human recursive search for local search MCP services
 =======
-# CogniFusion
-用本地浏览器，参考人类递归式搜索的本地搜索mcp服务
-Using a local browser, refer to human recursive search for local search MCP services
->>>>>>> 62a0a326baa6b7fadb482fee4afb9d4456d02845
 # CogniFusion - 智能融合研究助手系统
 
 ## 项目概述
