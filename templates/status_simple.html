@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniFusion - Status / 状态</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid #1d4ed8;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .card-icon {
+            font-size: 1.2rem;
+        }
+        
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+        
+        .card-subtitle {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 2px;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            color: #475569;
+        }
+        
+        .status-value {
+            font-weight: 500;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+        }
+        
+        .status-good {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .status-info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .tool-list {
+            list-style: none;
+            padding-left: 0;
+            margin-top: 10px;
+        }
+        
+        .tool-item {
+            padding: 6px 10px;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+        
+        .validation-section {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+        
+        .validation-section.good {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+        
+        .validation-title {
+            font-weight: 600;
+            color: #dc2626;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+        
+        .validation-title.good {
+            color: #16a34a;
+        }
+        
+        .validation-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .validation-item {
+            padding: 4px 0;
+            font-size: 0.85rem;
+        }
+        
+        .validation-item.error {
+            color: #dc2626;
+        }
+        
+        .validation-item.warning {
+            color: #d97706;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 0.85rem;
+            border-top: 1px solid #e5e7eb;
+            background: #f8fafc;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CogniFusion</h1>
+            <p>Intelligent Fusion Research Assistant System / 智能融合研究助手系统</p>
+        </div>
+        
+        <div class="content">
+            <!-- 系统状态卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">📊</div>
+                    <div>
+                        <div class="card-title">系统状态 / System Status</div>
+                        <div class="card-subtitle">核心服务状态 / Core Service Status</div>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">API 服务 / API Service</span>
+                    <span class="status-value status-good">运行中 / Running</span>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">端口 / Port</span>
+                    <span class="status-value status-info">{{ api_port }}</span>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">首次运行 / First Run</span>
+                    <span class="status-value {% if is_first_run %}status-warning{% else %}status-good{% endif %}">
+                        {% if is_first_run %}是 / Yes{% else %}否 / No{% endif %}
+                    </span>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="/health" class="btn btn-primary" target="_blank">健康检查 / Health Check</a>
+                    <a href="/config" class="btn btn-secondary">配置 / Configuration</a>
+                </div>
+            </div>
+            
+            <!-- 浏览器状态卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🌐</div>
+                    <div>
+                        <div class="card-title">浏览器引擎 / Browser Engine</div>
+                        <div class="card-subtitle">Playwright + 真实浏览器 / Real Browser</div>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">用户数据目录 / User Data Directory</span>
+                    <span class="status-value {% if user_data_dir %}status-good{% else %}status-error{% endif %}">
+                        {% if user_data_dir %}已配置 / Configured{% else %}未配置 / Not Configured{% endif %}
+                    </span>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">浏览器扩展 / Browser Extensions</span>
+                    <span class="status-value {% if extensions %}status-good{% else %}status-warning{% endif %}">
+                        {{ extensions|length }} 个 / {{ extensions|length }} items
+                    </span>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="/test/search?q=人工智能" class="btn btn-primary" target="_blank">测试搜索 / Test Search</a>
+                    <a href="/config" class="btn btn-secondary">配置 / Configuration</a>
+                </div>
+            </div>
+            
+            <!-- Ollama 状态卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🤖</div>
+                    <div>
+                        <div class="card-title">本地副脑 / Local Sub-Brain</div>
+                        <div class="card-subtitle">Ollama + 本地 LLM / Local LLM</div>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">连接状态 / Connection Status</span>
+                    <span class="status-value {% if ollama_status.status == 'connected' %}status-good{% else %}status-error{% endif %}">
+                        {% if ollama_status.status == 'connected' %}已连接 / Connected{% else %}未连接 / Disconnected{% endif %}
+                    </span>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">API 地址 / API Address</span>
+                    <span class="status-value status-info">{{ ollama_config.api_url }}</span>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">模型 / Model</span>
+                    <span class="status-value {% if ollama_config.model %}status-good{% else %}status-warning{% endif %}">
+                        {{ ollama_config.model }}
+                    </span>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="/test/ollama" class="btn btn-primary" target="_blank">测试连接 / Test Connection</a>
+                    <a href="/config" class="btn btn-secondary">配置 / Configuration</a>
+                </div>
+            </div>
+            
+            <!-- MCP 工具卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">🛠️</div>
+                    <div>
+                        <div class="card-title">MCP 工具 / MCP Tools</div>
+                        <div class="card-subtitle">Model Context Protocol</div>
+                    </div>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">MCP 服务 / MCP Service</span>
+                    <span class="status-value status-good">可用 / Available</span>
+                </div>
+                
+                <div class="status-item">
+                    <span class="status-label">传输协议 / Transport Protocol</span>
+                    <span class="status-value status-info">SSE</span>
+                </div>
+                
+                <div class="tool-list">
+                    <div class="tool-item">search(query, max_results=10)</div>
+                    <div class="tool-item">summarize_urls(urls)</div>
+                    <div class="tool-item">ask_specific_question(url, keyword)</div>
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="/config" class="btn btn-primary">配置 MCP / Configure MCP</a>
+                </div>
+            </div>
+            
+            <!-- 配置验证卡片 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-icon">✅</div>
+                    <div>
+                        <div class="card-title">配置验证 / Configuration Validation</div>
+                        <div class="card-subtitle">系统配置检查 / System Configuration Check</div>
+                    </div>
+                </div>
+                
+                {% if validation.errors or validation.warnings %}
+                <div class="validation-section {% if not validation.errors %}good{% endif %}">
+                    <div class="validation-title {% if not validation.errors %}good{% endif %}">
+                        {% if validation.errors %}需要修复的问题 / Issues to Fix{% else %}警告信息 / Warnings{% endif %}
+                    </div>
+                    <ul class="validation-list">
+                        {% for error in validation.errors %}
+                        <li class="validation-item error">{{ error }}</li>
+                        {% endfor %}
+                        {% for warning in validation.warnings %}
+                        <li class="validation-item warning">{{ warning }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% else %}
+                <div class="validation-section good">
+                    <div class="validation-title good">所有配置正常 / All Configurations OK</div>
+                    <p style="font-size: 0.85rem; margin-top: 5px;">系统配置验证通过。 / System configuration validation passed.</p>
+                </div>
+                {% endif %}
+                
+                <div class="action-buttons">
+                    {% if is_first_run or validation.errors %}
+                    <a href="/config" class="btn btn-primary">前往配置 / Go to Configuration</a>
+                    {% else %}
+                    <a href="/config" class="btn btn-secondary">查看配置 / View Configuration</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>CogniFusion © 2024 - 智能融合研究助手系统 / Intelligent Fusion Research Assistant System</p>
+        </div>
+    </div>
+    
+    <script>
+        // 自动刷新页面（每60秒）
+        setTimeout(function() {
+            window.location.reload();
+        }, 60000);
+    </script>
+</body>
+</html>

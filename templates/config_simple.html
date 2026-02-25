@@ -1,0 +1,369 @@
+1t'sts<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CogniFusion - Configuration / 配置</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
+            color: #333;
+            background: #f5f5f5;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #2563eb;
+            color: white;
+            padding: 20px;
+            border-bottom: 1px solid #1d4ed8;
+        }
+        
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 0.95rem;
+        }
+        
+        .form-group input[type="text"],
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .form-group input[type="text"]:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .form-group .hint {
+            font-size: 0.85rem;
+            color: #6b7280;
+            margin-top: 4px;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn-primary {
+            background: #2563eb;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #1d4ed8;
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .status-box {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .status-box h3 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.9rem;
+        }
+        
+        .status-item:last-child {
+            border-bottom: none;
+        }
+        
+        .status-label {
+            color: #4b5563;
+        }
+        
+        .status-value {
+            font-weight: 500;
+        }
+        
+        .status-good {
+            color: #059669;
+        }
+        
+        .status-warning {
+            color: #d97706;
+        }
+        
+        .status-error {
+            color: #dc2626;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #dc2626;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 640px) {
+            .content {
+                padding: 20px;
+            }
+            
+            .button-group {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CogniFusion Configuration / 配置</h1>
+            <p>Configure your intelligent research assistant system / 配置您的智能研究助手系统</p>
+        </div>
+        
+        <div class="content">
+            {% if is_first_run %}
+            <div class="status-box">
+                <h3>首次运行 / First Run</h3>
+                <p>请完成以下配置以开始使用。 / Please complete the following configuration to get started.</p>
+            </div>
+            {% endif %}
+            
+            <form action="/config/save" method="post">
+                <div class="form-group">
+                    <label for="user_data_dir" class="required">浏览器用户数据目录 / Browser User Data Directory</label>
+                    <input type="text" id="user_data_dir" name="user_data_dir" 
+                           value="{{ config.user_data_dir }}" 
+                           placeholder="C:\Users\YourName\AppData\Local\Google\Chrome\User Data" required>
+                    <div class="hint">
+                        浏览器用户数据目录，用于复用登录状态和配置 / Browser user data directory for reusing login status and configuration
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="extensions">浏览器扩展路径（可选） / Browser Extension Paths (Optional)</label>
+                    <textarea id="extensions" name="extensions" 
+                              placeholder="每行一个扩展路径 / One path per line">{{ config.extensions | join('\n') }}</textarea>
+                    <div class="hint">
+                        支持解压后的浏览器扩展，每行一个路径 / Supports unpacked browser extensions, one path per line
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ollama_api">Ollama API 地址 / Ollama API Address</label>
+                    <input type="text" id="ollama_api" name="ollama_api" 
+                           value="{{ config.ollama_api }}" 
+                           placeholder="http://127.0.0.1:11434">
+                    <div class="hint">
+                        Ollama 服务的 API 地址 / Ollama service API address
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ollama_model">Ollama 模型名称 / Ollama Model Name</label>
+                    <input type="text" id="ollama_model" name="ollama_model" 
+                           value="{{ config.ollama_model }}" 
+                           placeholder="llama3.2">
+                    <div class="hint">
+                        要使用的 Ollama 模型名称 / Ollama model name to use
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="max_text_length">最大文本长度（摘要） / Max Text Length (Summary)</label>
+                    <input type="number" id="max_text_length" name="max_text_length" 
+                           value="{{ config.max_text_length }}" 
+                           min="1000" max="200000" step="1000">
+                    <div class="hint">
+                        文本摘要时的最大字符数（默认：12000，当前：{{ config.max_text_length }}） / Maximum characters for text summarization (default: 12000, current: {{ config.max_text_length }})
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="max_extract_length">最大提取长度 / Max Extract Length</label>
+                    <input type="number" id="max_extract_length" name="max_extract_length" 
+                           value="{{ config.max_extract_length }}" 
+                           min="1000" max="200000" step="1000">
+                    <div class="hint">
+                        关键词提取时的最大字符数（默认：15000，当前：{{ config.max_extract_length }}） / Maximum characters for keyword extraction (default: 15000, current: {{ config.max_extract_length }})
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>浏览器偏好设置 / Browser Preferences</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="auto_open_browser" name="auto_open_browser" 
+                               {% if config.auto_open_browser %}checked{% endif %}>
+                        <label for="auto_open_browser">自动打开浏览器窗口 / Auto open browser window</label>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="headless_mode" name="headless_mode"
+                               {% if config.headless_mode %}checked{% endif %}>
+                        <label for="headless_mode">无头模式（后台运行） / Headless mode (run in background)</label>
+                    </div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn btn-primary">保存配置 / Save Configuration</button>
+                    <a href="/" class="btn btn-secondary">返回状态页 / Back to Status</a>
+                </div>
+            </form>
+            
+            <div class="status-box">
+                <h3>当前配置状态 / Current Configuration Status</h3>
+                <div class="status-item">
+                    <span class="status-label">用户数据目录 / User Data Directory</span>
+                    <span class="status-value {% if config.user_data_dir %}status-good{% else %}status-error{% endif %}">
+                        {% if config.user_data_dir %}已配置 / Configured{% else %}未配置 / Not Configured{% endif %}
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">浏览器扩展 / Browser Extensions</span>
+                    <span class="status-value {% if config.extensions %}status-good{% else %}status-warning{% endif %}">
+                        {{ config.extensions | length }} 个 / {{ config.extensions | length }} items
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Ollama API</span>
+                    <span class="status-value {% if config.ollama_api.startswith('http') %}status-good{% else %}status-warning{% endif %}">
+                        {{ config.ollama_api }}
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span class="status-label">Ollama 模型 / Ollama Model</span>
+                    <span class="status-value {% if config.ollama_model %}status-good{% else %}status-warning{% endif %}">
+                        {{ config.ollama_model }}
+                    </span>
+                </div>
+            </div>
+            
+            <a href="/" class="back-link">← 返回状态页面 / Back to Status Page</a>
+        </div>
+    </div>
+    
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const userDataDir = document.getElementById('user_data_dir').value.trim();
+            if (!userDataDir) {
+                e.preventDefault();
+                alert('请填写浏览器用户数据目录 / Please fill in the browser user data directory');
+                document.getElementById('user_data_dir').focus();
+                return false;
+            }
+            return true;
+        });
+    </script>
+</body>
+</html>

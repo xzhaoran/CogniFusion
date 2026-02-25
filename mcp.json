@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "cognifusion": {
+      "isActive": false,
+      "name": "cognifusion",
+      "type": "stdio",
+      "command": "你的下载路径\\CogniFusion2\\python\\python.exe",
+      "args": [
+        "你的下载路径\\CogniFusion2\\mcp_server.py"
+      ],
+      "env": {
+        "PYTHONPATH": "你的下载路径\\CogniFusion2",
+        "PORTABLE_MODE": "1",
+        "PLAYWRIGHT_BROWSERS_PATH": "你的下载路径\\CogniFusion2\\bin\\browsers",
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1",
+        "MCP_TRANSPORT": "stdio"
+      },
+      "installSource": "unknown"
+    }
+  }
+}

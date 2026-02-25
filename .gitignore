@@ -1,0 +1,8 @@
+python/
+portable/
+bin/browsers/
+User Data/
+__pycache__/
+*.log
+.venv/
+config.json
